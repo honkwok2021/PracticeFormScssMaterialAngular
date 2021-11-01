@@ -1,0 +1,80 @@
+<div >
+  <mat-card class="container " style="background-color: salmon;">
+    <h1>Testing TDF</h1>
+    <form #userForm="ngForm" class="form-group" (ngSubmit)="onSubmit()" novalidate>
+
+        {{userForm.value|json}}
+        <br>
+        {{userModel | json}}
+        <div class="">
+          <mat-form-field>
+            <label>Name</label>
+            <input matInput type="text" #name="ngModel" class="form-control" [class.is-invalid]="name.invalid && name.touched" 
+            name="userName" [(ngModel)]="userModel.name" minlength="2" required />
+            <!--<small [class.d-none]="name.valid || name.untouched">Name is required</small>-->
+            <div *ngIf="name.errors && (name.invalid || name.touched)">
+              <small *ngIf="name.errors.required">Name is required</small>
+              <small *ngIf="name.errors.minlength">minimum 2 characters</small>
+            </div>
+        </mat-form-field>
+        </div>
+        
+
+        {{name.untouched}}
+        <div>
+          <mat-form-field>
+            <label>email</label>
+            <input matInput type="eamil" class="form-control" name="email" [(ngModel)]="userModel.email" />
+        </mat-form-field>
+        </div>
+        
+        <div>
+          <mat-form-field >
+            <label>phone</label>
+            <input matInput type="tel" #phone="ngModel" class="form-control" name="phone" [(ngModel)]="userModel.phone" 
+            [class.is-invalid]="phone.invalid && phone.touched" pattern="^\d{10}$" required />
+            <!--<small>Phone number is required must be 10 digit</small>-->
+            <div *ngIf="phone.errors && (phone.invalid || phone.touched)">
+              <small *ngIf="phone.errors.required">Phone number is required</small>
+              <small *ngIf="phone.errors.pattern">Phone number must be 10 digit</small>
+            </div>
+          </mat-form-field>
+            
+        </div>
+        <div  class="">
+            <select class="" (blur)="validateTopic(topic.value)" (change)="validateTopic(topic.value)" #topic="ngModel" name="topics" [(ngModel)]="userModel.topic" [class.is-invalid]="topicHasError && topic.touched"  >
+              <option value="">I am interested in</option>
+              <option *ngFor="let topic of topics">{{ topic }}</option>
+            </select>
+            <div *ngIf="topic.errors && (topic.invalid || topic.untouched)">
+              <small *ngIf="topic.errors.required">Please choose a topic</small>
+            </div>
+            
+                 
+        </div>
+        <div class="mb-3">
+            <label>Time preference</label>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" #timePreference="ngModel" name="timePreference" value="morning" [(ngModel)]="userModel.timePreference" >
+              <label class="form-check-label">Morning (9AM - 12PM)</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" #timePreference="ngModel" name="timePreference" value="evening" [(ngModel)]="userModel.timePreference" >
+              <label class="form-check-label">Evening (5PM - 8PM)</label>
+            </div>
+            
+        </div>
+
+        <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" name="subscribe" [(ngModel)]="userModel.subscribe">
+            <label class="form-check-label">
+              Send me promotional offers
+            </label>
+          </div>
+      
+          <button [disabled]="userForm.form.invalid || topicHasError" class="btn btn-primary"  type="submit">Submit form</button>
+
+    </form>
+</mat-card>
+</div>
+
